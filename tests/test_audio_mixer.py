@@ -7,8 +7,7 @@ from pydub import AudioSegment
 from podcast_app.audio_mixer import (
     stitch_dialogue,
     overlay_background,
-    export_podcast,
-    mix_podcast,
+    export_podcast
 )
 
 

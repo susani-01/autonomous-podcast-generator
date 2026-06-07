@@ -66,8 +66,6 @@ def export_podcast(audio: AudioSegment, job_id: str) -> str:
             "genre": "Podcast",
         },
     )
-
-    size_mb = os.path.getsize(output_path) / (1024 * 1024)
     return output_path
 
 
