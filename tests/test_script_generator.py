@@ -1,4 +1,3 @@
-import pytest
 from podcast_app.script_generator import parse_script, generate_script
 
 

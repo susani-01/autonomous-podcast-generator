@@ -8,7 +8,7 @@ from podcast_app.audio_mixer import (
     stitch_dialogue,
     overlay_background,
     export_podcast,
-    mix_podcast
+    mix_podcast,
 )
 
 
@@ -40,21 +40,25 @@ def sample_script():
         {"speaker": "HOST1", "text": "Hello everyone."},
         {"speaker": "HOST2", "text": "Hi there Alex."},
         {"speaker": "HOST1", "text": "Great to have you."},
-        {"speaker": "HOST2", "text": "Happy to be here."}
+        {"speaker": "HOST2", "text": "Happy to be here."},
     ]
+
 
 def test_stitch_dialogue_returns_audio(sample_audio_paths, sample_script):
     result = stitch_dialogue(sample_audio_paths, sample_script)
     assert isinstance(result, AudioSegment)
+
 
 def test_stitch_dialogue_longer_than_individual(sample_audio_paths, sample_script):
     result = stitch_dialogue(sample_audio_paths, sample_script)
     single = AudioSegment.from_wav(sample_audio_paths[0])
     assert len(result) > len(single)
 
+
 def test_stitch_dialogue_adds_pauses(sample_audio_paths, sample_script):
     result = stitch_dialogue(sample_audio_paths, sample_script)
     assert len(result) > 2000
+
 
 def test_overlay_no_music_returns_dialogue(sample_audio_paths, sample_script):
     dialogue = stitch_dialogue(sample_audio_paths, sample_script)
@@ -67,6 +71,7 @@ def test_overlay_missing_file_returns_dialogue(sample_audio_paths, sample_script
     result = overlay_background(dialogue, music_path="nonexistent.mp3")
     assert len(result) == len(dialogue)
 
+
 def test_export_podcast_creates_file(sample_audio_paths, sample_script):
     dialogue = stitch_dialogue(sample_audio_paths, sample_script)
 
@@ -74,10 +79,11 @@ def test_export_podcast_creates_file(sample_audio_paths, sample_script):
     assert os.path.exists(path)
     assert path.endswith(".mp3")
 
+
 def test_export_podcast_nonzero_size(sample_audio_paths, sample_script):
     dialogue = stitch_dialogue(sample_audio_paths, sample_script)
 
-    os.makedirs("podcast_app/outputs/test_size",exist_ok=True)
+    os.makedirs("podcast_app/outputs/test_size", exist_ok=True)
     path = export_podcast(dialogue, job_id="test_size")
 
     assert os.path.exists(path)

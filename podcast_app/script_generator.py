@@ -96,50 +96,51 @@ Before producing the final output, internally verify that:
 - The dialogue maintains listener interest from beginning to end.
 - The output contains only the final podcast transcript."""
 
+
 def generate_script(article_text: str) -> list[dict]:
     response = client.chat.completions.create(
-        model = "gpt-4",
+        model="gpt-4",
         messages=[
-            {"role":"system","content":SYSTEM_PROMPT},
-            {"role":"user","content":f"write a podcast script based on this article:\n\n{article_text[:3000]}"}
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {
+                "role": "user",
+                "content": f"write a podcast script based on this article:\n\n{article_text[:3000]}",
+            },
         ],
-         temperature = 0.7
+        temperature=0.7,
     )
 
     raw_script = response.choices[0].message.content
     print(raw_script)
     return parse_script(raw_script)
 
+
 def parse_script(raw: str) -> list[dict]:
     lines = []
     for line in raw.strip().split("\n"):
-        line  = line.strip()
+        line = line.strip()
 
         if line.startswith("HOST1:"):
-            lines.append({
-                "speaker":"HOST1",
-                "text":line.replace("HOST1:","").strip()
-            })
+            lines.append(
+                {"speaker": "HOST1", "text": line.replace(
+                    "HOST1:", "").strip()}
+            )
         elif line.startswith("HOST2:"):
-            lines.append({
-                "speaker":"HOST2",
-                "text":line.replace("HOST2","").strip()
-            })
+            lines.append(
+                {"speaker": "HOST2", "text": line.replace("HOST2", "").strip()}
+            )
 
     return lines
+
 
 def fetch_article(url: str) -> str:
     import requests
     from bs4 import BeautifulSoup
 
-    response = requests.get(url,timeout=10)
-    soup = BeautifulSoup(response.text,"html.parser")
+    response = requests.get(url, timeout=10)
+    soup = BeautifulSoup(response.text, "html.parser")
 
-    for tag in soup(["script","style","nav","footer"]):
+    for tag in soup(["script", "style", "nav", "footer"]):
         tag.decompose()
-    text = soup.get_text(separator=" ",strip=True)
+    text = soup.get_text(separator=" ", strip=True)
     return text
-
-
-
-
