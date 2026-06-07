@@ -1,0 +1,8 @@
+venv/
+.venv/
+.env
+podcast_app/outputs/
+podcast_app/music/
+.pytest_cache/
+.DS_Store
+.idea/
