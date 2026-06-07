@@ -74,6 +74,7 @@ def test_overlay_missing_file_returns_dialogue(sample_audio_paths, sample_script
 def test_export_podcast_creates_file(sample_audio_paths, sample_script):
     dialogue = stitch_dialogue(sample_audio_paths, sample_script)
 
+    os.makedirs("podcast_app/outputs/test_export",exist_ok=True)
     path = export_podcast(dialogue, job_id="test_export")
     assert os.path.exists(path)
     assert path.endswith(".mp3")
