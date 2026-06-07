@@ -87,4 +87,4 @@ jobs:
 
       - name: Verify image built successfully
         run: |
-          docker images | grep ai-podcast
+          docker images | grep ai-podcast-gen
